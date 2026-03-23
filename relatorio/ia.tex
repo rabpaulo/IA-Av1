@@ -28,4 +28,60 @@ O objetivo do trabalho é desenvolver modelos de Regressão Linear Simples e Reg
 
 Visando melhorar o entendimento sobre estimação de coeficientes, e a capacidade de realizar estimativas pontuais e a conduzir avaliações de modelos utilizando métodos como o Coeficiente de Determinação ($R^{2}$ e $R^{2}$ ajustado), Erro Quadrático Médio (MSE) e Erro Absoluto Médio (MAE).
 
+\section{Fundamentação Teórica}
+\subsection{Regressão Linear Simples}
+Regressão Linear Simples é um método estatístico que modela a relação entre duas variáveis: uma variável dependente, $y$, e uma variável independente, $x$. O objetivo é de encontrar a melhor reta que se ajusta aos dados observados, minimizando os resíduos. O modelo é expresso pela equação:
+\begin{equation}
+    y = \beta_0 + \beta_1x + \epsilon
+\end{equation}
+Onde $\beta_0$ e $\beta_1$ são os parâmetros do modelo e $\epsilon$ representa o erro.
+
+\subsection{Regressão Linear Múltipla}
+A Regressão Linear Múltipla é uma evolução do método simples utilizando diversas variáveis independentes ($x_1, x_2, \dots, x_n$), assim explicando a variação de uma única variável dependente ($y$). Essa abordagem mais complexa permite a modelagem de acontecimentos do mundo real, onde o resultado pode ser influenciado por diferentes fatores. A equação do modelo:
+\begin{equation}
+    y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_nx_n + \epsilon
+\end{equation}
+
+\subsection{Interpretação dos Coeficientes e Intercepto}
+\begin{itemize}
+    \item \textbf{Intercepto ($\beta_0$):} Valor esperado da variável dependente ($y$) quando todas as variáveis independentes ($x$) são iguais a zero. O intercepto pode ter um significado prático ou ser apenas uma constante de ajuste.
+    \item \textbf{Coeficientes Angulares ($\beta_i$):} Cada coeficiente $\beta_i$ quantifica a taxa de variação esperada em $y$ para cada unidade de aumento na variável $x_i$, assumindo que todas as outras variáveis no modelo permanecem constantes. 
+\end{itemize}
+
+Para ilustrar de forma prática: se ao prever a concentração de um elemento químico no corpo com base na idade e na dieta, um valor $X$ para a variável idade significa que: \textit{"Se a idade aumentar em 1 ano, é esperado que o arsénio nas unhas aumente em X ppm, mantendo as outras variáveis constantes"}.
+
+\subsection{Métricas de Avaliação de Modelos}
+Foram utilizadas as seguintes métricas de avaliação para medir a qualidade e precisão dos modelos ajustados:
+
+\begin{itemize}
+    \item \textbf{Coeficiente de Determinação ($R^2$):} Indica a proporção da variância da variável dependente que é explicada pelo modelo. O seu valor é entre 0 e 1. Por exemplo, um $R^2$ de 0,80, indicando que 80\% da variação de $y$ é explicada pelas variáveis independentes incluídas no modelo.
+    \item \textbf{Raiz do Erro Quadrático Médio (RMSE):} Calcula a raiz quadrada da média dos erros elevados ao quadrado. Penalizando fortemente erros de previsão elevados. Quanto menor for o valor do RMSE, mais próximas as previsões estão dos valores reais observados.
+    \item \textbf{Erro Absoluto Médio (MAE - \textit{Mean Absolute Error}):} Representa a média das diferenças absolutas entre as previsões do modelo e os valores reais. Ao contrário do RMSE, o MAE trata todos os erros com o mesmo peso de forma linear. Quanto menor o seu valor, melhor é o ajuste do modelo aos dados.
+\end{itemize}
+
+\section{Protocolo Experimental}
+Nessa seção é descrito os conjuntos de dados utilizados, as variáveis selecionadas, as ferraments utilizadas e os métodos seguidos para o ajuste e validação dos modelos de regressão.
+
+\subsection{Fonte dos Dados e Variáveis Incluídas}
+As análises foram baseadas em dois conjuntos distintos fornecidos pela \textit{The Sports Network} - 2004 e \textit{Electronic Packaging and Production (2002, Vol. 42)}.
+\begin{itemize}
+    \item \textbf{Problema 1 (Futebol Americano):} Os dados providos pela \textit{The Sports Network} e se trata do desempenho de \textit{quarterbacks} na temporada de 2004 da NFL. O arquivo que foi utilizado é o \texttt{qb\_2004.csv}. O modelo ajustado que foi usado para resolver este problema é de regressão linear simples, utilizando o número médio de jardas conquistadas por tentativa de passe como variável independente ($x$) e a pontuação do jogador como variável dependente ($y$).
+    
+    \item \textbf{Problema 2 (Circuitos Integrados):} Os dados são de um estudo publicado na revista \textit{Electronic Packaging and Production} sobre o efeito da inspeção de raios X em circuitos integrados. O arquivo correspondente é o \texttt{dose radiacao\_expandida.csv}. O modelo de regressão linear múltipla, as variáveis independentes incluídas foram a Corrente elétrica (em miliamperes) e o Tempo de Exposição (em minutos). A variável dependente analisada foi a Dose de Radiação (em \textit{rad}).
+\end{itemize}
+
+\subsection{Ferramentas Utilizadas}
+Em conformidade com as regras, não foi utilizado bibliotecas com implementações prontas dos modelos ou estruturas de dados de alto nível, como o \textit{scikit-learn} e o \textit{pandas}. A leitura dos arquivos, manipulação de vetores e matrizes, e cálculos foram realizadas com a biblioteca \textit{Numpy}. E junto com a biblioteca \textit{Plotly Express} para a geração dos gráficos.
+
+\subsection{Passos para Ajuste do Modelo}
+A modelagem preditiva seguiu as seguintes etapas:
+
+\begin{enumerate}
+    \item \textbf{Carregamento e Pré-processamento:} Leitura dos arquivos CSV através da função \texttt{np.loadtxt}, ignorando a primeira linha (cabeçalho) e separando as colunas numéricas nas respetivas matrizes de características ($X$) e vetores de resposta ($Y$).
+    \item \textbf{Estimação de Parâmetros (Treinamento):} Cálculo analítico dos coeficientes da regressão ($\beta$) se utilizando das equações do Método dos Mínimos Quadrados. No primeiro problema, foi calculado a inclinação e a interseção de forma vetorial. No Problema 2, foi aplicado a resolução matricial para o processamento de múltiplas variáveis.
+    \item \textbf{Previsão e Inferência:} Foi utilizado os modelos otimizados para prever valores em cenários específicos, como a pontuação esperada para uma média de 7,5 jardas e a uma dose de radiação para 15 mAmp em 5 minutos.
+    \item \textbf{Análise de Resíduos:} O cálculo dos valores ajustados ($\hat{y}_i$) e dos resíduos ($e_i$) para todas as observações. No Problema 1, foi incluiudo a estruturação de uma tabela e para a verificação visual das suposições do modelo (aleatoriedade e constância da variância dos erros).
+    \item \textbf{Validação por Métricas:} Extração do Coeficiente de Determinação ($R^2$), $R^2$ ajustado, Raiz do Erro Quadrático Médio (RMSE) e Erro Absoluto Médio (MAE). Essas métricas permitem a avaliação quantitativamente e a precisão dos modelos gerados e fundamentar a comparação com modelos alternativos de preditor único e cenários sem intercepto.
+\end{enumerate}
+
 \end{document}
