@@ -4,6 +4,7 @@
 \usepackage{hyperref}
 \usepackage[margin=0.7in]{geometry}
 \usepackage[brazil]{babel}
+\usepackage{float}
 
 \title{Projeto IA - AV1}
 \date{}
@@ -20,7 +21,7 @@ O problema 1 consiste em analisar dados referentes aos pontos marcados por um \t
 
 O segundo problema foca no efeito da inspeção de raios X em circuitos integrados, baseado em dados de um artigo publicado na revista \textit{Electronic Packaging and Production} (2002). O objetivo é compreender como as doses de radiação absorvida (variável de resposta) são influenciadas conjuntamente pela corrente elétrica, medida em miliamperes, e pelo tempo de exposição, medido em minutos.
 
-\subsection{O Objetivo das Análises de Regressão}
+\subsection{Objetivo das Análises de Regressão}
 No aprendizado de máquina, modelos de regressão linear são fundamentais para calcular a relação entre variáveis. O intenção das análises é conseguir estimar a melhor reta ou hiperplano, assim minimizando o erro dessas previsões. A modelagem permite a compreensão da taxa de variação dos dados, como uma variável impacta a outra e fazer deduções preditivas para situações ainda não observados.
 
 \subsection{Objetivo do Trabalho}
@@ -81,7 +82,113 @@ A modelagem preditiva seguiu as seguintes etapas:
     \item \textbf{Estimação de Parâmetros (Treinamento):} Cálculo analítico dos coeficientes da regressão ($\beta$) se utilizando das equações do Método dos Mínimos Quadrados. No primeiro problema, foi calculado a inclinação e a interseção de forma vetorial. No Problema 2, foi aplicado a resolução matricial para o processamento de múltiplas variáveis.
     \item \textbf{Previsão e Inferência:} Foi utilizado os modelos otimizados para prever valores em cenários específicos, como a pontuação esperada para uma média de 7,5 jardas e a uma dose de radiação para 15 mAmp em 5 minutos.
     \item \textbf{Análise de Resíduos:} O cálculo dos valores ajustados ($\hat{y}_i$) e dos resíduos ($e_i$) para todas as observações. No Problema 1, foi incluiudo a estruturação de uma tabela e para a verificação visual das suposições do modelo (aleatoriedade e constância da variância dos erros).
-    \item \textbf{Validação por Métricas:} Extração do Coeficiente de Determinação ($R^2$), $R^2$ ajustado, Raiz do Erro Quadrático Médio (RMSE) e Erro Absoluto Médio (MAE). Essas métricas permitem a avaliação quantitativamente e a precisão dos modelos gerados e fundamentar a comparação com modelos alternativos de preditor único e cenários sem intercepto.
+    \item \textbf{Validação por Métricas:} Extração do Coeficiente de Determinação ($R^2$), $R^2$ ajustado, Raiz do Erro Quadrático Médio (RMSE) e Erro Absoluto Médio (MAE). Seguindo essas métricas, permite a avaliação quantitativamente e a precisão dos modelos gerados e fundamentar a comparação com modelos alternativos de preditor único e cenários sem intercepto.
 \end{enumerate}
+
+\section{Resultados e Discussão}
+Nessa seção será apresentando os resultados obtidos através dos modelos de regressão linear construídos, junto com a interpretação física e estatística dos parâmetros estimados. A análise foi dividida entre os dois problemas propostos.
+
+\subsection{Problema 1: Desempenho de \textit{Quarterbacks}}
+\subsubsection{Coeficientes Estimados e Interpretação}
+O Modelo pelo Método dos Mínimos Quadrados após o treinamento, a equação da reta ajustada encontrada foi:
+\begin{equation}
+    y = 14.1955 + 10.0917x
+\end{equation}
+O coeficiente linear ou intercepto ($\beta_0 = 14.1955$) representa a pontuação teórica esperada caso o jogador obtivesse $0$ jardas por tentativa. No contexto real, esse valor seria como um fator de ajuste da reta. O coeficiente angular ($\beta_1 = 10.0917$) indica que a taxa de variação estatística: para cada jarda adicional conquistada por tentativa, um aumento de 10.0917 na pontuação final do jogador. 
+
+Assim, segundo a taxa de variação, caso o jogador sofra uma diminuição de exata 1 jarda por tentativa, a mudança na sua pontuação média será de -10.0917 pontos.
+
+\subsubsection{Previsões e Análise de Resíduos}
+Utilizando o modelo gerado para fins preditivos, um \textit{quarterback} com uma média de $7,5$ jardas por tentativa teria uma pontuação aproximada de 89.88. 
+
+Também foi analisado uma observação do conjunto de dados correspondente a $7,21$ jardas. Foi estimado uma pontuação de 86.96. Em comparação com o valor real de 95.00, o resíduo é de 8.04, tendo o erro pontual de previsão da reta. A tabela completa com os valores observados, ajustados e resíduos foi extraída e os erros se mostram aleatoriamente distribuídos.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Valor Observado} & \textbf{Valor Ajustado} & \textbf{Resíduo} \\ \hline
+105.50 & 98.87 & 6.63 \\ \hline
+97.40 & 91.60 & 5.80 \\ \hline
+96.90 & 91.50 & 5.40 \\ \hline
+96.20 & 94.73 & 1.47 \\ \hline
+95.00 & 86.96 & 8.04 \\ \hline
+93.80 & 90.19 & 3.61 \\ \hline
+92.70 & 95.03 & -2.33 \\ \hline
+91.40 & 91.50 & -0.10 \\ \hline
+90.20 & 86.96 & 3.24 \\ \hline
+89.40 & 86.45 & 2.95 \\ \hline
+87.70 & 94.22 & -6.52 \\ \hline
+87.50 & 85.85 & 1.65 \\ \hline
+87.00 & 78.08 & 8.92 \\ \hline
+86.40 & 82.42 & 3.98 \\ \hline
+86.40 & 83.42 & 2.98 \\ \hline
+86.00 & 88.37 & -2.37 \\ \hline
+85.40 & 87.06 & -1.66 \\ \hline
+84.70 & 94.32 & -9.62 \\ \hline
+84.30 & 78.88 & 5.42 \\ \hline
+81.70 & 82.52 & -0.82 \\ \hline
+81.00 & 81.31 & -0.31 \\ \hline
+80.30 & 84.23 & -3.93 \\ \hline
+80.20 & 79.29 & 0.91 \\ \hline
+80.10 & 85.24 & -5.14 \\ \hline
+79.60 & 78.68 & 0.92 \\ \hline
+77.10 & 80.60 & -3.50 \\ \hline
+76.00 & 76.87 & -0.87 \\ \hline
+73.70 & 86.55 & -12.85 \\ \hline
+72.60 & 78.18 & -5.58 \\ \hline
+71.40 & 76.56 & -5.16 \\ \hline
+70.00 & 65.87 & 4.13 \\ \hline
+66.50 & 71.82 & -5.32 \\ \hline
+\end{tabular}
+\caption{Tabela com os valores observados, ajustados e resíduos do modelo de desempenho de \textit{quarterbacks}.}
+\label{tab:todos_residuos}
+\end{table}
+
+\subsection{Problema 2: Inspeção de Raios X em Circuitos}
+No segundo problema, foi usado a Regressão Linear Múltipla para prever a dose de radiação ($y$) com base na corrente ($x_1$) e no tempo de exposição ($x_2$).
+
+\subsubsection{Coeficientes do Modelo Completo}
+O modelo completo ajustado resultou nos seguintes coeficientes:
+\begin{equation}
+    y = -433.8145 + 17.9035x_1 + 69.5791x_2
+\end{equation}
+O coeficiente da Corrente (17.9035) indica que mantendo o tempo de exposição constante, o aumento de 1 mAmp eleva a dose de radiação em 17.9035 \textit{rad}. O coeficiente do Tempo (69.5791) indica que o impacto isolado de cada minuto adicional na radiação absorvida. Com esses parâmetros, a previsão de radiação para a inspeção utilizando $15$ mAmp durante $5$ minutos é de 182.63 \textit{rad}.
+
+\subsubsection{Avaliação do Modelo e Métricas}
+O Coeficiente de Determinação ($R^2$) tem o valor de 0.8431, demonstrando que 84.31\% da variabilidade da dose de radiação é explicada pela corrente e pelo tempo. O $R^2$ ajustado, é de 0.8425, indicando uma robustez do modelo.
+
+\subsubsection{Comparação com Modelos Alternativos}
+Para a avaliação da eficiência da formulação escolhida, o modelo completo foi contrastado com duas abordagens alternativas:
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Modelo} & \textbf{RMSE} & \textbf{MAE} & \textbf{$R^2$} \\ \hline
+Modelo Completo (Corrente + Tempo) & 233.5167 & 187.5942 & 0.8431 \\ \hline
+Modelo Apenas com Corrente ($x_1$) & 565.2392 & 464.2573 & 0.0807 \\ \hline
+Modelo Completo com Intercepto Zero & 286.9186 & 205.1239 & 0.7631 \\ \hline
+\end{tabular}
+\caption{Comparação de métricas entre os modelos testados.}
+\label{tab:comparacao_modelos}
+\end{table}
+
+A análise da Tabela \ref{tab:comparacao_modelos} mostra que o \textbf{Modelo Completo} apresenta maior capacidade explicativa (maior $R^2$) e maior precisão (menor RMSE), superando o modelo que utiliza apenas a variável da Corrente elétrica. 
+
+Assim, ao testar a hipótese de forçar a reta a passar pela origem (Intercepto Zero), observa-se uma variação nas métricas de erro. Apesar de um intercepto nulo faça sentido físico (zero radiação sem máquina ligada), o modelo com intercepto livre ajustou-se melhor aos dados observados na amostra de calibração.
+
+\section{Conclusão}
+
+O desenvolvimento e a avaliação dos modelos apresentados nesse trabalho mostram a eficácia da regressão estatística no entendimento de fenômenos complexos e na previsão de resultados, usando de dados observacionais. Os resultados demonstraram que é possível extrair tendências confiáveis e quantificar o impacto de diferentes variáveis independentes sobre uma variável de interesse.
+
+Se mostrando de extrema importância a aplicação desse tipo de modelo para a previsão a exposição ao arsênio. A capacidade de estimar com precisão os níveis de contaminação é uma ferramenta crítica para a saúde pública e para a gestão ambiental. Um modelo preditivo bem ajustado permite a identificação com antecedência de fontes hídricas perigosas, mapeamento de populações vulneráveis e atua como base científica sólida para a formulação de políticas públicas, intervenções preventivas e medição de estações de tratamento.
+
+Mesmo com consistência nos achados, o estudo apresenta margem para evolução. Como possíveis melhorias e próximos passos para o aprimoramento das previsões:
+
+\begin{itemize}
+    \item \textbf{Inclusão de Novas Variáveis:} Incorporar características geoquímicas adicionais (como pH da água, presença de outros metais pesados e tipo de rocha matriz) e dados espaciais (coordenadas geográficas) para aumentar a variância explicada ($R^2$) do modelo.
+    \item \textbf{Exploração de Modelos Não-Lineares:} Testar algoritmos de Aprendizado de Máquina, como Florestas Aleatórias (\textit{Random Forest}) ou Máquinas de Vetores de Suporte (\textit{SVM}), que são capazes de capturar interações complexas entre as variáveis que a regressão linear tradicional pode omitir.
+    \item \textbf{Validação Cruzada (\textit{Cross-Validation}):} Aplicar técnicas de particionamento e validação em novos conjuntos de dados (de diferentes regiões geográficas) para atestar a capacidade de generalização e evitar o sobreajuste (\textit{overfitting}) do modelo atual.
+\end{itemize}
 
 \end{document}
